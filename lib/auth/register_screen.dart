@@ -1,18 +1,19 @@
-import 'package:evently/auth/register_screen.dart';
+import 'package:evently/auth/login_screen.dart';
 import 'package:evently/widgets/default_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
-  static const String RouteName = '/login';
+  static const String RouteName = '/register';
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -32,6 +33,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: MediaQuery
                       .sizeOf(context)
                       .height * 0.2,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                DefaultTextFormField(
+                  controller: emailController,
+                  hintText: 'Name',
+                  prefixIconImage: 'username',
+                  validator: (value) {
+                    if(value == null || value.length < 3){
+                      return 'invalid username';
+                    }
+                    return null ;
+                  },
                 ),
                 const SizedBox(
                   height: 16,
@@ -65,22 +80,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                DefaultButton(onPressed: login, label: 'Login'),
+                DefaultButton(onPressed: login, label: 'Register'),
                 const SizedBox(height: 20,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account?",
+                      "Already have an account?",
                       style: Theme
                           .of(context)
                           .textTheme
                           .bodyLarge,
                     ),
                     TextButton(
-                      onPressed: () =>Navigator.of(context).pushNamed(RegisterScreen.RouteName),
+                      onPressed: () => Navigator.of(context).pushNamed(LoginScreen.RouteName),
                       child: const Text(
-                        'Create Account',
+                        'Login',
                       ),
                     ),
                   ],
