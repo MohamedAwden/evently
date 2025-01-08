@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
-  static const String RouteName = '/login';
+  static const String routeName = '/login';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           .bodyLarge,
                     ),
                     TextButton(
-                      onPressed: () =>Navigator.of(context).pushNamed(RegisterScreen.RouteName),
+                      onPressed: () =>Navigator.of(context).pushNamed(RegisterScreen.routeName),
                       child: const Text(
                         'Create Account',
                       ),

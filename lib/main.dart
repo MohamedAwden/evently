@@ -1,4 +1,5 @@
 import 'package:evently/auth/login_screen.dart';
+import 'package:evently/screens/home_screen.dart';
 import 'package:evently/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +16,11 @@ class EventlyApp extends StatelessWidget {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        LoginScreen.RouteName : (_) => LoginScreen(),
-        RegisterScreen.RouteName : (_) => RegisterScreen(),
+        LoginScreen.routeName : (_) => LoginScreen(),
+        RegisterScreen.routeName : (_) => RegisterScreen(),
+        HomeScreen.routeName : (_) => HomeScreen(),
       },
-      initialRoute:LoginScreen.RouteName ,
+      initialRoute:HomeScreen.routeName ,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,

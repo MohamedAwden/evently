@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
-  static const String RouteName = '/register';
+  static const String routeName = '/register';
 
   @override
   State<RegisterScreen> createState() => RegisterScreenState();
@@ -25,14 +25,12 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
-            key:formKey,
+            key: formKey,
             child: Column(
               children: [
                 Image.asset(
                   'assets/images/Logo.png',
-                  height: MediaQuery
-                      .sizeOf(context)
-                      .height * 0.2,
+                  height: MediaQuery.sizeOf(context).height * 0.2,
                 ),
                 const SizedBox(
                   height: 16,
@@ -42,10 +40,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                   hintText: 'Name',
                   prefixIconImage: 'username',
                   validator: (value) {
-                    if(value == null || value.length < 3){
+                    if (value == null || value.length < 3) {
                       return 'invalid username';
                     }
-                    return null ;
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -56,10 +54,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                   hintText: 'Email',
                   prefixIconImage: 'mail',
                   validator: (value) {
-                    if(value == null || value.length < 5){
+                    if (value == null || value.length < 5) {
                       return 'invalid email';
                     }
-                    return null ;
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -70,7 +68,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   hintText: 'Password',
                   prefixIconImage: 'password',
                   validator: (value) {
-                    if(value == null || value.length < 8){
+                    if (value == null || value.length < 8) {
                       return 'password can be less than 8 characters';
                     }
                     return null;
@@ -81,19 +79,19 @@ class RegisterScreenState extends State<RegisterScreen> {
                   height: 24,
                 ),
                 DefaultButton(onPressed: login, label: 'Register'),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Already have an account?",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyLarge,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     TextButton(
-                      onPressed: () => Navigator.of(context).pushNamed(LoginScreen.RouteName),
+                      onPressed: () => Navigator.of(context)
+                          .pushNamed(LoginScreen.routeName),
                       child: const Text(
                         'Login',
                       ),
@@ -106,12 +104,9 @@ class RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
-
   }
 
   void login() {
-    if( formKey.currentState!.validate()){
-
-    }
+    if (formKey.currentState!.validate()) {}
   }
 }
