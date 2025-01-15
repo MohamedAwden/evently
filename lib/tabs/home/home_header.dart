@@ -26,8 +26,8 @@ class _HomeHeaderState extends State<HomeHeader> {
       decoration: BoxDecoration(
         color: AppTheme.primary,
         borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(16),
-          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(32),
+          bottomLeft: Radius.circular(32),
         ),
       ),
       child: SafeArea(
@@ -70,6 +70,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                     .toList(),
               ),
             ),
+
           ],
         ),
       ),
