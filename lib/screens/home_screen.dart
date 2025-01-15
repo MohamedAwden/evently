@@ -1,8 +1,8 @@
-import 'package:evently/tabs/heart/heart_tab.dart';
 import 'package:evently/tabs/home/home_tab.dart';
 import 'package:evently/widgets/nav_bar_item.dart';
 import 'package:flutter/material.dart';
 
+import '../tabs/favourite/favourite_tab.dart';
 import '../tabs/map/map_tab.dart';
 import '../tabs/profile/profile_tab.dart';
 
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> tabs = [
     HomeTab(),
     MapTab(),
-    HeartTab(),
+    FavouriteTab(),
     ProfileTab(),
   ];
 
