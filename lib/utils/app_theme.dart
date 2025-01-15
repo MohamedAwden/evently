@@ -99,6 +99,11 @@ class AppTheme {
         fontWeight: FontWeight.w500,
         color: white,
       ),
+      displayLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 24,
+        color: Colors.white,
+      )
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
