@@ -6,12 +6,13 @@ import '../utils/app_theme.dart';
 class DefaultTextFormField extends StatefulWidget {
   DefaultTextFormField({
     super.key,
-     this.controller,
+    this.controller,
     required this.hintText,
     this.onChanged,
     this.prefixIconImage,
     this.validator,
     this.isPassword = false,
+    this.maxLine,
   });
 
   TextEditingController? controller;
@@ -20,13 +21,14 @@ class DefaultTextFormField extends StatefulWidget {
   void Function(String)? onChanged;
   String? Function(String?)? validator;
   bool isPassword;
+  int? maxLine;
 
   @override
   State<DefaultTextFormField> createState() => _DefaultTextFormFieldState();
 }
 
 class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
-  late bool isObscure = widget.isPassword ;
+  late bool isObscure = widget.isPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +37,15 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        prefixIcon: SvgPicture.asset(
-          'assets/icons/${widget.prefixIconImage}.svg',
-          height: 24,
-          width: 24,
-          fit: BoxFit.scaleDown,
-          colorFilter: ColorFilter.mode(AppTheme.grey, BlendMode.srcIn),
-        ),
+        prefixIcon: widget.prefixIconImage == null
+            ? null
+            : SvgPicture.asset(
+                'assets/icons/${widget.prefixIconImage}.svg',
+                height: 24,
+                width: 24,
+                fit: BoxFit.scaleDown,
+                colorFilter: ColorFilter.mode(AppTheme.grey, BlendMode.srcIn),
+              ),
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
@@ -57,6 +61,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
             : null,
       ),
       obscureText: isObscure,
+      maxLines: widget.maxLine,
       validator: widget.validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
     );

@@ -48,15 +48,15 @@ class _HomeHeaderState extends State<HomeHeader> {
             DefaultTabController(
               length: Catgories.categories.length,
               child: TabBar(
+                labelPadding: EdgeInsets.symmetric(horizontal: 10),
+
                 indicatorColor: Colors.transparent,
                 dividerColor: Colors.transparent,
                 tabAlignment: TabAlignment.start,
                 isScrollable: true,
                 onTap: (index) {
                   currentIndex = index;
-                  setState(() {
-
-                  });
+                  setState(() {});
                 },
                 tabs: Catgories.categories
                     .map(
@@ -64,13 +64,14 @@ class _HomeHeaderState extends State<HomeHeader> {
                         catgories: category,
                         isSelected: currentIndex ==
                             Catgories.categories.indexOf(category),
-
+                        selectedBackgroundColor: AppTheme.white,
+                        selectedForegroundColor: AppTheme.primary,
+                        unselectedForegroundColor: AppTheme.white,
                       ),
                     )
                     .toList(),
               ),
             ),
-
           ],
         ),
       ),
