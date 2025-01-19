@@ -30,7 +30,7 @@ class ProfileHeader extends StatelessWidget {
               children: [
                 Text(
                   'Mohamed Awden',
-                  style: textTheme.displayMedium,
+                  style: textTheme.displayLarge,
                 ),
                 SizedBox(
                   height: 10,
