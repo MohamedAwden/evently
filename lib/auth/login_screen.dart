@@ -1,7 +1,12 @@
 import 'package:evently/auth/register_screen.dart';
+import 'package:evently/firebase_service.dart';
 import 'package:evently/widgets/default_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
+import '../screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,14 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Form(
-            key:formKey,
+            key: formKey,
             child: Column(
               children: [
                 Image.asset(
                   'assets/images/Logo.png',
-                  height: MediaQuery
-                      .sizeOf(context)
-                      .height * 0.2,
+                  height: MediaQuery.sizeOf(context).height * 0.2,
                 ),
                 const SizedBox(
                   height: 16,
@@ -41,10 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Email',
                   prefixIconImage: 'mail',
                   validator: (value) {
-                    if(value == null || value.length < 5){
+                    if (value == null || value.length < 5) {
                       return 'invalid email';
                     }
-                    return null ;
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -55,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Password',
                   prefixIconImage: 'password',
                   validator: (value) {
-                    if(value == null || value.length < 8){
+                    if (value == null || value.length < 8) {
                       return 'password can be less than 8 characters';
                     }
                     return null;
@@ -66,19 +69,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 24,
                 ),
                 DefaultButton(onPressed: login, label: 'Login'),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Don't have an account?",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyLarge,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     TextButton(
-                      onPressed: () =>Navigator.of(context).pushNamed(RegisterScreen.routeName),
+                      onPressed: () => Navigator.of(context)
+                          .pushNamed(RegisterScreen.routeName),
                       child: const Text(
                         'Create Account',
                       ),
@@ -91,12 +94,24 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-
   }
 
   void login() {
-    if( formKey.currentState!.validate()){
-
-    }
+    if (formKey.currentState!.validate()) {
+      FirebaseService.login(
+        email: emailController.text,
+        password: passwordController.text,
+      ).then(
+            (user) {
+          Provider.of<UserProvider>(context, listen: false).updateCUrrrentUser(user);
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        },
+      )
+          .catchError(
+            (error) {
+          print(error);
+        },
+      );
+      }
   }
 }

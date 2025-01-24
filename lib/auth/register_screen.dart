@@ -1,7 +1,11 @@
 import 'package:evently/auth/login_screen.dart';
+import 'package:evently/firebase_service.dart';
+import 'package:evently/providers/user_provider.dart';
+import 'package:evently/screens/home_screen.dart';
 import 'package:evently/widgets/default_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -36,7 +40,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   height: 16,
                 ),
                 DefaultTextFormField(
-                  controller: emailController,
+                  controller: nameController,
                   hintText: 'Name',
                   prefixIconImage: 'username',
                   validator: (value) {
@@ -107,6 +111,23 @@ class RegisterScreenState extends State<RegisterScreen> {
   }
 
   void login() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      FirebaseService.register(
+        name: nameController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim()  ,
+      )
+          .then(
+            (user) {
+              Provider.of<UserProvider>(context, listen: false).updateCUrrrentUser(user);
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+            },
+            )
+          .catchError(
+            (error) {
+              print(error);
+            },
+          );
+    }
   }
 }
