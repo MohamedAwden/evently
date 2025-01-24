@@ -6,14 +6,16 @@ import '../../modals/catgories.dart';
 class TabItem extends StatelessWidget {
   TabItem({
     super.key,
-    required this.catgories,
+    required this.label,
+    required this.icon,
     required this.isSelected,
     required this.selectedBackgroundColor,
     required this.selectedForegroundColor,
     required this.unselectedForegroundColor,
   });
 
-  Catgories catgories;
+  String label;
+  IconData icon;
   bool isSelected;
   Color selectedBackgroundColor;
   Color selectedForegroundColor;
@@ -39,14 +41,14 @@ class TabItem extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            catgories.icon,
+            icon,
             color: isSelected
                 ? selectedForegroundColor
                 : unselectedForegroundColor,
           ),
           SizedBox(width: 16),
           Text(
-            catgories.name,
+            label,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: isSelected
                     ? selectedForegroundColor

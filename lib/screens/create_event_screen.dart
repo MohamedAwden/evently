@@ -1,8 +1,12 @@
+import 'package:evently/firebase_service.dart';
+import 'package:evently/modals/event.dart';
+import 'package:evently/providers/event_provider.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/widgets/default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-
+import 'package:provider/provider.dart';
 import '../modals/catgories.dart';
 import '../tabs/home/tab_item.dart';
 import '../utils/app_theme.dart';
@@ -25,7 +29,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   DateTime? selectedDate;
 
   DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-  TimeOfDay? selectedTine;
+  TimeOfDay? selectedTime;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -60,6 +64,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 isScrollable: true,
                 padding: EdgeInsets.only(left: 6),
                 onTap: (index) {
+                  if(currentIndex == index) return;
                   currentIndex = index;
                   selectedCategory = Catgories.categories[currentIndex];
                   setState(() {});
@@ -67,12 +72,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 tabs: Catgories.categories
                     .map(
                       (category) => TabItem(
-                        catgories: category,
+                        label: category.name,
                         isSelected: currentIndex ==
                             Catgories.categories.indexOf(category),
                         selectedBackgroundColor: AppTheme.primary,
                         selectedForegroundColor: AppTheme.white,
-                        unselectedForegroundColor: AppTheme.primary,
+                        unselectedForegroundColor: AppTheme.primary, icon: category.icon,
                       ),
                     )
                     .toList(),
@@ -189,14 +194,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               initialTime: TimeOfDay.now(),
                             );
                             if (time != null) {
-                              selectedTine = time;
+                              selectedTime = time;
                               setState(() {});
                             }
                           },
                           child: Text(
-                            selectedTine == null
+                            selectedTime == null
                                 ? 'Chose Time'
-                                : selectedTine!.format(context),
+                                : selectedTime!.format(context),
                             style: textTheme.bodyLarge!
                                 .copyWith(color: AppTheme.primary),
                           ),
@@ -217,11 +222,31 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
   }
 
-  void createEvent() {
+  Future<void> createEvent() async {
     if (formKey.currentState!.validate() &&
-        selectedTine != null &&
+        selectedTime != null &&
         selectedDate != null) {
+      DateTime dateTime = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+        selectedTime!.hour,
+        selectedTime!.minute,
+      );
       print('created');
+      Event event = Event(
+        userId: Provider.of<UserProvider>(context, listen: false).currentUser!.id,
+        title: titleController.text,
+        category: selectedCategory,
+        description: descriptionController.text,
+        dateTime: dateTime!,
+      );
+      await FirebaseService.addEventToFireStore(event).then((_) {
+        Provider.of<EventsProvider>(context, listen: false).getEvents();
+        Navigator.of(context).pop();
+      }).catchError((_){
+        print('failed to create event');
+      });
     }
   }
 }

@@ -12,7 +12,7 @@ class DefaultTextFormField extends StatefulWidget {
     this.prefixIconImage,
     this.validator,
     this.isPassword = false,
-    this.maxLine,
+    this.maxLine = 1,
   });
 
   TextEditingController? controller;
@@ -64,6 +64,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
       maxLines: widget.maxLine,
       validator: widget.validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
     );
   }
 }

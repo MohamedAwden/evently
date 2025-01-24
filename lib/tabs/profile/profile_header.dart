@@ -1,5 +1,8 @@
+import 'package:evently/modals/user_modal.dart';
+import 'package:evently/providers/user_provider.dart';
 import 'package:evently/utils/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
@@ -7,6 +10,7 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+UserModal user=    Provider.of<UserProvider>(context, listen: false).currentUser!;
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -29,14 +33,14 @@ class ProfileHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Mohamed Awden',
+                  user.name,
                   style: textTheme.displayLarge,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(
-                  'mohamed@gamil.com',
+                  user.email,
                   style: textTheme.bodyLarge?.copyWith(color: AppTheme.white),
                 ),
               ],
