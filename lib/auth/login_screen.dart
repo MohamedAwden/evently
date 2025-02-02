@@ -2,11 +2,15 @@ import 'package:evently/auth/register_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/widgets/default_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../providers/user_provider.dart';
 import '../screens/home_screen.dart';
+import '../utils/app_theme.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -68,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                DefaultButton(onPressed: login, label: 'Login'),
+                DefaultButton(onPressed: login, label: AppLocalizations.of(context)!.login),
                 const SizedBox(
                   height: 20,
                 ),
@@ -109,7 +113,19 @@ class _LoginScreenState extends State<LoginScreen> {
       )
           .catchError(
             (error) {
-          print(error);
+              String? errorMessage;
+              if(error is FirebaseAuthException){
+                errorMessage =error.message;
+              }
+              Fluttertoast.showToast(
+                  msg: errorMessage ?? "something went wrong",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: AppTheme.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
         },
       );
       }

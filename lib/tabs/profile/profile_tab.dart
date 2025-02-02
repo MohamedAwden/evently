@@ -1,14 +1,21 @@
-import 'package:evently/auth/login_screen.dart';
-import 'package:evently/firebase_service.dart';
-import 'package:evently/providers/settings_provider.dart';
-import 'package:evently/providers/user_provider.dart';
 import 'package:evently/tabs/profile/profile_header.dart';
-import 'package:evently/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../auth/login_screen.dart';
+import '../../firebase_service.dart';
+import '../../providers/settings_provider.dart';
+import '../../providers/user_provider.dart';
+import '../../utils/app_theme.dart';
 
 class ProfileTab extends StatelessWidget {
-  const ProfileTab({super.key});
+  ProfileTab({super.key});
+
+  final List<Language> languages = [
+    Language(name: 'en', language: 'English'),
+    Language(name: 'ar', language: 'العربية'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +48,59 @@ class ProfileTab extends StatelessWidget {
                     Switch(
                       value: settingsProvider.isDark,
                       onChanged: (isDark) {
-                        settingsProvider
-                            .changeTheme(isDark ? ThemeMode.dark : ThemeMode.light);
+                        settingsProvider.changeTheme(
+                            isDark ? ThemeMode.dark : ThemeMode.light);
+                        storeThemeAndLanguage(settingsProvider);
                       },
                     ),
-
                   ],
                 ),
                 SizedBox(
                   height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Language',
+                      style: textTheme.titleLarge?.copyWith(
+                          color: settingsProvider.isDark
+                              ? AppTheme.white
+                              : AppTheme.black),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          width: 1,
+                          color: AppTheme.primary,
+                        ),
+                      ),
+                      child: DropdownButton(
+                          underline: SizedBox(),
+                          iconEnabledColor: AppTheme.primary,
+                          value: settingsProvider.languageCode,
+                          items: languages
+                              .map(
+                                (language) => DropdownMenuItem(
+                                  child: Text(
+                                    language.language,
+                                    style: textTheme.titleLarge
+                                        ?.copyWith(color: AppTheme.primary),
+                                  ),
+                                  value: language.name,
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (languageCode) {
+                            if (languageCode != null) {
+                              settingsProvider.changeLanguage(languageCode);
+                              storeThemeAndLanguage(settingsProvider);
+                            }
+                          }),
+                    ),
+                  ],
                 ),
                 Spacer(),
                 InkWell(
@@ -87,4 +138,28 @@ class ProfileTab extends StatelessWidget {
       ],
     );
   }
+
+  void storeThemeAndLanguage(SettingsProvider settingsProvider) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkTheme', settingsProvider.isDark);
+    await prefs.setString('languageCode', settingsProvider.languageCode);
+  }
+
+ static Future<void> retrieveThemeAndLanguage(
+      SettingsProvider settingsProvider) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+    String languageCode = prefs.getString('languageCode') ?? 'en';
+
+    settingsProvider
+        .changeTheme(isDarkTheme ? ThemeMode.dark : ThemeMode.light);
+    settingsProvider.changeLanguage(languageCode);
+  }
+}
+
+class Language {
+  String name;
+  String language;
+
+  Language({required this.name, required this.language});
 }

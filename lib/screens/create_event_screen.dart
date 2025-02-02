@@ -6,6 +6,7 @@ import 'package:evently/providers/user_provider.dart';
 import 'package:evently/widgets/default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../modals/catgories.dart';
@@ -261,8 +262,25 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       await FirebaseService.addEventToFireStore(event).then((_) {
         Provider.of<EventsProvider>(context, listen: false).getEvents();
         Navigator.of(context).pop();
+        Fluttertoast.showToast(
+            msg: "Event created",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: AppTheme.green,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
       }).catchError((_) {
-        print('failed to create event');
+        Fluttertoast.showToast(
+            msg: "failed to create event ",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: AppTheme.red,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
       });
     }
   }
