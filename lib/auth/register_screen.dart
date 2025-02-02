@@ -6,6 +6,7 @@ import 'package:evently/widgets/default_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -82,7 +83,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                DefaultButton(onPressed: login, label: 'Register'),
+                DefaultButton(onPressed: login,label: AppLocalizations.of(context)!.register),
                 const SizedBox(
                   height: 20,
                 ),

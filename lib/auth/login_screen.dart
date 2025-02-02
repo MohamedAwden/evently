@@ -4,6 +4,7 @@ import 'package:evently/widgets/default_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../providers/user_provider.dart';
 import '../screens/home_screen.dart';
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                DefaultButton(onPressed: login, label: 'Login'),
+                DefaultButton(onPressed: login, label: AppLocalizations.of(context)!.login),
                 const SizedBox(
                   height: 20,
                 ),

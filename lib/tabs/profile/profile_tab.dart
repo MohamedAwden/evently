@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfileTab extends StatelessWidget {
-  const ProfileTab({super.key});
+  ProfileTab({super.key});
+
+  List<Language> languages = [
+    Language(name: 'en', language: 'English'),
+    Language(name: 'ar', language: 'العربية'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +46,57 @@ class ProfileTab extends StatelessWidget {
                     Switch(
                       value: settingsProvider.isDark,
                       onChanged: (isDark) {
-                        settingsProvider
-                            .changeTheme(isDark ? ThemeMode.dark : ThemeMode.light);
+                        settingsProvider.changeTheme(
+                            isDark ? ThemeMode.dark : ThemeMode.light);
                       },
                     ),
-
                   ],
                 ),
                 SizedBox(
                   height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Language',
+                      style: textTheme.titleLarge?.copyWith(
+                          color: settingsProvider.isDark
+                              ? AppTheme.white
+                              : AppTheme.black),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          width: 1,
+                          color: AppTheme.primary,
+                        ),
+                      ),
+                      child: DropdownButton(
+                          underline: SizedBox(),
+                          iconEnabledColor: AppTheme.primary,
+                          value: settingsProvider.languageCode,
+                          items: languages
+                              .map(
+                                (language) => DropdownMenuItem(
+                                  child: Text(
+                                    language.language,
+                                    style: textTheme.titleLarge
+                                        ?.copyWith(color: AppTheme.primary),
+                                  ),
+                                  value: language.name,
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (languageCode) {
+                            if (languageCode != null) {
+                              settingsProvider.changeLanguage(languageCode);
+                            }
+                          }),
+                    ),
+                  ],
                 ),
                 Spacer(),
                 InkWell(
@@ -87,4 +134,11 @@ class ProfileTab extends StatelessWidget {
       ],
     );
   }
+}
+
+class Language {
+  String name;
+  String language;
+
+  Language({required this.name, required this.language});
 }
