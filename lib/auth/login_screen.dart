@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       "Don't have an account?",
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     TextButton(
                       onPressed: () => Navigator.of(context)

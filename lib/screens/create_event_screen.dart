@@ -1,6 +1,7 @@
 import 'package:evently/firebase_service.dart';
 import 'package:evently/modals/event.dart';
 import 'package:evently/providers/event_provider.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/widgets/default_button.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
+
+    TextTheme textTheme = Theme
+        .of(context)
+        .textTheme;
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Event'),
@@ -49,7 +54,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
                   'assets/images/${selectedCategory.imageName}.png',
-                  height: MediaQuery.sizeOf(context).height * .25,
+                  height: MediaQuery
+                      .sizeOf(context)
+                      .height * .25,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -64,22 +71,24 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 isScrollable: true,
                 padding: EdgeInsets.only(left: 6),
                 onTap: (index) {
-                  if(currentIndex == index) return;
+                  if (currentIndex == index) return;
                   currentIndex = index;
                   selectedCategory = Catgories.categories[currentIndex];
                   setState(() {});
                 },
                 tabs: Catgories.categories
                     .map(
-                      (category) => TabItem(
+                      (category) =>
+                      TabItem(
                         label: category.name,
                         isSelected: currentIndex ==
                             Catgories.categories.indexOf(category),
                         selectedBackgroundColor: AppTheme.primary,
-                        selectedForegroundColor: AppTheme.white,
-                        unselectedForegroundColor: AppTheme.primary, icon: category.icon,
+                        selectedForegroundColor: settingsProvider.isDark?AppTheme.backGroundDark: AppTheme.white,
+                        unselectedForegroundColor: AppTheme.primary,
+                        icon: category.icon,
                       ),
-                    )
+                )
                     .toList(),
               ),
             ),
@@ -134,6 +143,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           width: 24,
                           height: 24,
                           fit: BoxFit.scaleDown,
+                          colorFilter: ColorFilter
+                              .mode(settingsProvider.isDark? AppTheme.white: AppTheme.black, BlendMode.srcIn),
+
                         ),
                         SizedBox(
                           width: 10,
@@ -151,7 +163,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               lastDate: DateTime.now().add(Duration(days: 365)),
                               initialDate: selectedDate,
                               initialEntryMode:
-                                  DatePickerEntryMode.calendarOnly,
+                              DatePickerEntryMode.calendarOnly,
                             );
                             if (date != null) {
                               selectedDate = date;
@@ -178,6 +190,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           width: 24,
                           height: 24,
                           fit: BoxFit.scaleDown,
+                          colorFilter: ColorFilter
+                              .mode(settingsProvider.isDark? AppTheme.white: AppTheme.black, BlendMode.srcIn),
                         ),
                         SizedBox(
                           width: 10,
@@ -235,7 +249,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       );
       print('created');
       Event event = Event(
-        userId: Provider.of<UserProvider>(context, listen: false).currentUser!.id,
+        userId: Provider
+            .of<UserProvider>(context, listen: false)
+            .currentUser!
+            .id,
         title: titleController.text,
         category: selectedCategory,
         description: descriptionController.text,
@@ -244,7 +261,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       await FirebaseService.addEventToFireStore(event).then((_) {
         Provider.of<EventsProvider>(context, listen: false).getEvents();
         Navigator.of(context).pop();
-      }).catchError((_){
+      }).catchError((_) {
         print('failed to create event');
       });
     }

@@ -1,4 +1,5 @@
 import 'package:evently/providers/event_provider.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/utils/app_theme.dart';
@@ -19,6 +20,7 @@ class _HomeHeaderState extends State<HomeHeader> {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     EventsProvider eventsProvider = Provider.of<EventsProvider>(context);
     return Container(
@@ -28,7 +30,9 @@ class _HomeHeaderState extends State<HomeHeader> {
       ),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppTheme.primary,
+        color: settingsProvider.isDark
+            ? AppTheme.backGroundDark
+            : AppTheme.primary,
         borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(32),
           bottomLeft: Radius.circular(32),
@@ -58,7 +62,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 tabAlignment: TabAlignment.start,
                 isScrollable: true,
                 onTap: (index) {
-                  if(currentIndex == index) return;
+                  if (currentIndex == index) return;
                   currentIndex = index;
                   eventsProvider.changeSelectedCategory(
                       index == 0 ? null : Catgories.categories[index - 1]);
@@ -67,8 +71,12 @@ class _HomeHeaderState extends State<HomeHeader> {
                   TabItem(
                     label: 'All',
                     isSelected: currentIndex == 0,
-                    selectedBackgroundColor: AppTheme.white,
-                    selectedForegroundColor: AppTheme.primary,
+                    selectedBackgroundColor: settingsProvider.isDark
+                        ? AppTheme.primary
+                        : AppTheme.white,
+                    selectedForegroundColor: settingsProvider.isDark
+                        ? AppTheme.white
+                        : AppTheme.primary,
                     unselectedForegroundColor: AppTheme.white,
                     icon: Icons.grid_3x3_outlined,
                   ),
@@ -77,8 +85,12 @@ class _HomeHeaderState extends State<HomeHeader> {
                       label: category.name,
                       isSelected: currentIndex ==
                           Catgories.categories.indexOf(category) + 1,
-                      selectedBackgroundColor: AppTheme.white,
-                      selectedForegroundColor: AppTheme.primary,
+                      selectedBackgroundColor: settingsProvider.isDark
+                          ? AppTheme.primary
+                          : AppTheme.white,
+                      selectedForegroundColor: settingsProvider.isDark
+                          ? AppTheme.white
+                          : AppTheme.primary,
                       unselectedForegroundColor: AppTheme.white,
                       icon: category.icon,
                     ),

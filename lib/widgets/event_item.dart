@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../modals/event.dart';
+import '../providers/settings_provider.dart';
 
 class EventItem extends StatelessWidget {
   Event event;
@@ -14,6 +15,8 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
+
     UserProvider userProvider = Provider.of<UserProvider>(
       context,
     );
@@ -34,7 +37,8 @@ class EventItem extends StatelessWidget {
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-                color: AppTheme.white, borderRadius: BorderRadius.circular(8)),
+                color:settingsProvider.isDark ? AppTheme.backGroundDark : AppTheme.white,
+                borderRadius: BorderRadius.circular(8)),
             child: Column(
               children: [
                 Text(
@@ -64,7 +68,7 @@ class EventItem extends StatelessWidget {
               margin: EdgeInsets.all(8),
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                  color: AppTheme.white,
+    color:settingsProvider.isDark ? AppTheme.backGroundDark : AppTheme.white,
                   borderRadius: BorderRadius.circular(8)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

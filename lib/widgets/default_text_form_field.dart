@@ -33,6 +33,8 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: Theme.of(context).textTheme.labelLarge,
+
       controller: widget.controller,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
